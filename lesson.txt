@@ -1,0 +1,5 @@
+1. writing sequence/order of the routes matter while using the app.use("/", (req, res) => {}) method
+2. by default, when you write any url on the top of the browser that's make a get api call
+3. app.use("/hello", (req, res) => { // it will cover anything that comes after /hello
+    res.send("Hello from SERVER");
+});
