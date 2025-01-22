@@ -1,5 +1,28 @@
 1. writing sequence/order of the routes matter while using the app.use("/", (req, res) => {}) method
+
 2. by default, when you write any url on the top of the browser that's make a get api call
-3. app.use("/hello", (req, res) => { // it will cover anything that comes after /hello
+
+3. app.use("/hello", (req, res) => { // it will cover anything that comes after /hello and any request like get, post, delete...
     res.send("Hello from SERVER");
 });
+
+4. /ac, /abc --> b is optional
+app.get("/ab?c", (req, res) => {})
+
+5. /abc, /abbc --> a and c is at first and last, b is regex (b, bb, bbbbbb, any number of b)
+app.get("/ab+c", (req, res) => {})
+
+6. /abcd, /ab(anything)cd --> starts with ab (anything) end with cd 
+app.get("/ab*cd", (req, res) => {})
+
+7. app.get("/a(bc)*d", ) --> bc combined any no. of time optional
+
+8. app.get("/.*fly$/", ) --> ends with fly starts with anything
+
+9. app.get("/user", (req, res) => {}) 
+http://localhost:1234/user?userId=101&password="testing" 
+// console.log(req.query); //{ userId: '101', password: 'testing' }
+
+10. app.get("/user/:userId/:name/:password", (req, res) => {})
+http://localhost:1234/user/101/modi/testing
+console.log(req.params); //{ userId: '101', name: 'modi', password: 'testing' }
