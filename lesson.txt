@@ -26,3 +26,15 @@ http://localhost:1234/user?userId=101&password="testing"
 10. app.get("/user/:userId/:name/:password", (req, res) => {})
 http://localhost:1234/user/101/modi/testing
 console.log(req.params); //{ userId: '101', name: 'modi', password: 'testing' }
+
+lec --> 18 Middlewares & Error Handeling
+GET /users => middleware chain => request handler
+app.get("/user",
+    (req, res, next) => {
+        console.log("Handeling /user route"); 
+        next();
+    },
+    (req, res, next) => {
+        res.send("1st Route Handeler");
+    }
+);
