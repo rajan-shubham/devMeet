@@ -6,20 +6,13 @@ const app = express(); // new(web server) expressjs application
 app.use(express.json());
 
 app.post("/signup", async (req, res) => {
-    // const userObj = {
-    //     firstName: "rajan",
-    //     lastName: "kumar",
-    //     emailId: "axplusby",
-    //     password: "pass",
-    //     age: 18,
-    //     gender: "male",
-    // }
     const user = new User(req.body);
     try {
+        if (user?.skills.length > 10) { throw new Error("Skills cannot be more then 10"); }
         await user.save();
         res.send("User added successfully");
     } catch (err) {
-        res.status(400).send("Error in saving the user:" + err.message);
+        res.status(400).send("Error in saving the user: " + err.message);
     }
 });
 
@@ -61,15 +54,21 @@ app.delete("/user", async (req, res) => {
 })
 
 // updating a user
-app.patch("/user", async (req, res) => {
-    const userId = req.body.userId;
+app.patch("/user/:userId", async (req, res) => {
+    const userId = req.params?.userId;
     const data = req.body;
-    try{
-        const user = await User.findByIdAndUpdate({_id: userId}, data, {returnDocument: "before"});
+    try {
+        const ALLOWED_UPDATES = ["photoUrl", "about", "gender", "age", "skills"];
+
+        const isUpdateAllowed = Object.keys(data).every((k) => ALLOWED_UPDATES.includes(k));
+        if (!isUpdateAllowed) { throw new Error("Update Not Allowed"); }
+        if (data?.skills.length > 10) { throw new Error("Skills cannot be more then 10"); }
+        const user = await User.findByIdAndUpdate({_id: userId}, data, {returnDocument: "before", runValidators: true, });
         console.log(user);
+        if (user === null) { throw new Error("User Not Found With id: " + userId) }
         res.send("User updated successfully");
     }catch(err){
-        res.status(400).send("User not found");
+        res.status(400).send("UPDATE FAILED: " + err.message);
     }
 })
 
