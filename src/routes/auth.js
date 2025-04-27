@@ -44,7 +44,7 @@ router.post("/login", async (req, res) => {
 
             // Add the token to cookie and send the respose back to the user
             res.cookie("tokenShubham", token, {expires: new Date(Date.now() + 8 * 3600000)});
-            res.send("Login Successful");
+            res.json(user);
         } else {
             throw new Error("Invalid Credentials");
         }

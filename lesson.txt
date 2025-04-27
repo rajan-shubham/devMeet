@@ -178,3 +178,6 @@ pagination
 skip = (page-1)*limit;
 
 mnogoDB functons: .skip() & .limit()
+
+devMeet-web
+never call a Hook inside a function in a component
